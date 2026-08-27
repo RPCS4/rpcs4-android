@@ -1,27 +1,27 @@
 # ============================================================================
 # RPCS4 Android CI
 #
-# DISABLED BY DEFAULT (manual dispatch only).
+# Runs on pushes, pull requests, and manual workflow dispatch.
 #
-# To enable automatic builds on every push + pull request, uncomment the
-# `push:` and `pull_request:` blocks under `on:` below.
-#
-# The workflow builds both debug and release APKs against the rpcs4 submodule.
-# Native compilation of the C++ core takes ~20-35 minutes on hosted runners.
+# The workflow builds debug, release, or both APKs against the rpcs4 submodule.
+# Native compilation of the C++ core may take ~20-35 minutes on hosted runners.
 # ============================================================================
 
 name: android
 
 on:
-   push:
-    branches: [ master, main ]
+  push:
+    branches: [master, main]
+
   pull_request:
+    branches: [master, main]
+
   workflow_dispatch:
     inputs:
       build_type:
-        description: 'Gradle build type'
+        description: "Gradle build type"
         required: true
-        default: 'debug'
+        default: debug
         type: choice
         options:
           - debug
@@ -45,14 +45,15 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '21'
+          java-version: "21"
 
-      - name: Set up Gradle cache
+      - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
       - name: Install Android SDK components
         run: |
           yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
+
           "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
             "platforms;android-35" \
             "build-tools;35.0.0" \
@@ -61,10 +62,22 @@ jobs:
 
       - name: Build APKs
         run: |
-          case "${{ github.event.inputs.build_type || 'both' }}" in
-            debug)   ./gradlew :app:assembleDebug ;;
-            release) ./gradlew :app:assembleRelease ;;
-            both)    ./gradlew :app:assembleDebug :app:assembleRelease ;;
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BUILD_TYPE="${{ inputs.build_type }}"
+          else
+            BUILD_TYPE="both"
+          fi
+
+          case "$BUILD_TYPE" in
+            debug)
+              ./gradlew :app:assembleDebug
+              ;;
+            release)
+              ./gradlew :app:assembleRelease
+              ;;
+            both)
+              ./gradlew :app:assembleDebug :app:assembleRelease
+              ;;
           esac
 
       - name: Upload debug APK
