@@ -25,6 +25,7 @@
 #include <memory>
 #include <string>
 #include <thread>
+#include <mutex>
 #include <unistd.h>
 
 #include "SDL.h"                      // compat shim: window registry + quit injection

@@ -29,12 +29,18 @@
 
 #include <cstdint>
 #include <cstring>
+#include <pthread.h>
+
+#ifndef pthread_attr_getstackaddr
+#define pthread_attr_getstackaddr(attr, addr) pthread_attr_getstack((attr), (addr), &(size_t){0})
+#endif
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 typedef uint8_t  Uint8;
+typedef int16_t  Sint16;
 typedef uint16_t Uint16;
 typedef uint32_t Uint32;
 typedef int32_t  Sint32;
@@ -238,6 +244,8 @@ enum {
     SDL_SCANCODE_UP = 82,
 };
 
+char* SDL_GetPrefPath(const char* org, const char* app);
+
 const Uint8* SDL_GetKeyboardState(int* numkeys);
 
 // ------------------------------------------- android integration entry points
@@ -253,6 +261,13 @@ bool Rpcs4Compat_HasAndroidWindow();
 
 /** Cooperative stop: injects SDL_QUIT into the next event pump. */
 void Rpcs4Compat_RequestQuit();
+
+void Rpcs4Compat_SetPadState(
+    unsigned int sceButtonsMask,
+    float lx, float ly, float rx, float ry,
+    float l2, float r2);
+
+void Rpcs4Compat_SetKeyboardKey(int scancode, bool down);
 
 #ifdef __cplusplus
 }   // extern "C"

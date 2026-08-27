@@ -1,6 +1,7 @@
 package com.rpcs4.android
 
 import android.os.Bundle
+import android.view.InputDevice
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -35,7 +36,7 @@ class MainActivity : ComponentActivity() {
 
     // ------------------------------------------------------ emulation chrome
 
-    fun setImmersive(enabled: Boolean) {
+    fun updateImmersiveMode(enabled: Boolean) {
         immersiveEnabled = enabled
         if (enabled) {
             window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
     // -------------------------------------------------- hardware gamepad feed
 
     override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
-        if (immersiveEnabled && event.source and MotionEvent.SOURCE_CLASS_JOYSTICK != 0) {
+        if (immersiveEnabled && (event.source and InputDevice.SOURCE_CLASS_JOYSTICK) != 0) {
             routeMotion(event)
             return true
         }

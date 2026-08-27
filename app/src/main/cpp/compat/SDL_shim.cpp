@@ -32,14 +32,14 @@
 
 namespace {
 
-struct ShimWindow {
+struct SDL_Window_Impl {
     ANativeWindow* native_window = nullptr;
     std::string title;
 };
 
 std::mutex g_window_mutex;
 ANativeWindow* g_registered_window = nullptr;   // set from JNI
-ShimWindow g_created_window;
+SDL_Window_Impl g_created_window;
 std::atomic<bool> g_quit_requested { false };
 std::string g_last_error = "no error";
 
@@ -113,7 +113,7 @@ SDL_Window* SDL_CreateWindow(
 
     g_created_window.native_window = g_registered_window;
     g_created_window.title = title ? title : "";
-    return &g_created_window;
+    return reinterpret_cast<SDL_Window*>(&g_created_window);
 }
 
 void SDL_SetWindowTitle(SDL_Window* /*window*/, const char* title)
@@ -229,6 +229,13 @@ SDL_bool SDL_Vulkan_CreateSurface(
         return SDL_FALSE;
     }
     return SDL_TRUE;
+}
+
+char* SDL_GetPrefPath(const char* /*org*/, const char* /*app*/)
+{
+    static std::string pref_path;
+    pref_path = "/data/data/com.rpcs4.android/files/";
+    return const_cast<char*>(pref_path.c_str());
 }
 
 void SDL_Vulkan_GetDrawableSize(SDL_Window* window, int* w, int* h)

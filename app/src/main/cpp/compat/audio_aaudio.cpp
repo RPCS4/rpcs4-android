@@ -117,14 +117,15 @@ void onStreamData(float* dst, int32_t numFrames)
     o.pcm.erase(o.pcm.begin(), o.pcm.begin() + static_cast<long>(take));
 }
 
-void onDataCallback(AAudioStream* /*stream*/, void* userData, void* audioData, int32_t numFrames)
+aaudio_data_callback_result_t onDataCallback(AAudioStream* /*stream*/, void* userData, void* audioData, int32_t numFrames)
 {
     auto* dst = static_cast<float*>(audioData);
     (void)userData;
     onStreamData(dst, numFrames);
+    return AAUDIO_CALLBACK_RESULT_CONTINUE;
 }
 
-void onErrorCallback(AAudioStream*, aaudio_result_t error)
+void onErrorCallback(AAudioStream*, void* /*userData*/, aaudio_result_t error)
 {
     __android_log_print(ANDROID_LOG_ERROR, TAG, "AAudio error: %s", AAudio_convertResultToText(error));
 }

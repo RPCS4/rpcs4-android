@@ -28,6 +28,8 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Vulkan platform extension macros are required before any vulkan.h inclusion.
 add_definitions(-DVK_USE_PLATFORM_ANDROID_KHR)
+add_definitions(-DVMA_STATIC_VULKAN_FUNCTIONS=0)
+add_definitions(-DVMA_DYNAMIC_VULKAN_FUNCTIONS=0)
 if(UNIX)
     add_definitions(-D_GNU_SOURCE)
 endif()
@@ -96,6 +98,7 @@ file(GLOB CORE_LOADERS_APP_SOURCES    ${CORE_ROOT}/Loaders/App/*.cpp)
 file(GLOB CORE_LOADERS_SFO_SOURCES    ${CORE_ROOT}/Loaders/SFO/*.cpp)
 
 file(GLOB CORE_OS_SOURCES             ${CORE_ROOT}/OS/*.cpp)
+file(GLOB CORE_PSN_SOURCES            ${CORE_ROOT}/PSN/Providers/*/*.cpp)
 file(GLOB LIBS_SUBDIRS RELATIVE ${CORE_ROOT}/OS/Libraries ${CORE_ROOT}/OS/Libraries/*)
 set(LIB_SOURCES "")
 foreach(lib ${LIBS_SUBDIRS})
@@ -131,6 +134,7 @@ set(ALL_CORE_SOURCES
     ${CORE_LOADERS_APP_SOURCES}
     ${CORE_LOADERS_SFO_SOURCES}
     ${CORE_OS_SOURCES}
+    ${CORE_PSN_SOURCES}
     ${LIB_SOURCES}
     ${DEP_XXHASH_SOURCES}
     ${DEP_MINIZ_SOURCES}
@@ -170,6 +174,8 @@ set(UPSTREAM_INCLUDE_DIRS
     ${DEPS_DIR}/zydis/include
     ${DEPS_DIR}/zydis/src
     ${DEPS_DIR}/zydis/dependencies/zycore/include
+    ${DEPS_DIR}/SDL/src/video/khronos
+    ${DEPS_DIR}/SDL/src/video/khronos/vulkan
 )
 
 set(FILTERED_INCLUDE_DIRS "")
@@ -229,6 +235,8 @@ target_compile_options(rpcs4_core PRIVATE
     -Wno-missing-field-initializers
     -Wno-unused-variable
     -Wno-sign-compare
+    -Wno-format-security
+    -include pthread_compat.h
     # Upstream relies on heavy C++23 constructs; clang accepts them but can be
     # noisy with deprecation notices from newer libc++.
     -Wno-deprecated-declarations
