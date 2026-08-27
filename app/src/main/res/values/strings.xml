@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RPCS4</string>
+    <string name="library_empty_title">No games found</string>
+    <string name="library_empty_body">Pick the folder that contains your PS4 game directories (each folder holds eboot.bin and sce_sys/param.sfo).</string>
+    <string name="pick_games_folder">Pick games folder</string>
+    <string name="boot_game">Boot game</string>
+    <string name="settings_title">Settings</string>
+    <string name="logs_title">Logs</string>
+    <string name="emulation_paused">Paused</string>
+    <string name="stop_emulation">Stop</string>
+</resources>

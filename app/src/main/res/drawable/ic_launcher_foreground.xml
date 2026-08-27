@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Minimal RPCS4 wordmark used as the adaptive-icon foreground. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#5C6BC0"
+        android:pathData="M30,38h34a14,14 0 0 1 0,28h-8l12,12h-13l-12,-12h-1v12H30zM42,50v6h21a3,3 0 0 0 0,-6z" />
+</vector>
