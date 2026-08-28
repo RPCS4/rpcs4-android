@@ -7,6 +7,7 @@ import com.rpcs4.android.data.GameInfo
 import com.rpcs4.android.data.GameRepository
 import com.rpcs4.android.data.SettingsRepository
 import com.rpcs4.android.data.SourceMode
+import com.rpcs4.android.emu.PadStateMux
 import com.rpcs4.android.native.NativeBridge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

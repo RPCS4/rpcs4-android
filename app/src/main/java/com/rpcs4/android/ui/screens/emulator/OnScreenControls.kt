@@ -1,8 +1,10 @@
 package com.rpcs4.android.ui.screens.emulator
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.waitForUpOrCancellation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -133,13 +135,12 @@ fun HoldButton(
         modifier = modifier
             .size(if (sceBit == PadBits.OPTIONS || sceBit == PadBits.L3 || sceBit == PadBits.R3) 34.dp else 46.dp)
             .pointerInput(sceBit) {
-                detectTapGestures(
-                    onPress = {
-                        state.buttons = state.buttons or sceBit
-                        runCatching { it.awaitRelease() }
-                        state.buttons = state.buttons and sceBit.inv()
-                    },
-                )
+                awaitEachGesture {
+                    awaitFirstDown(requireUnconsumed = false)
+                    state.buttons = state.buttons or sceBit
+                    waitForUpOrCancellation()
+                    state.buttons = state.buttons and sceBit.inv()
+                }
             },
     ) {
         val active = state.buttons and sceBit != 0

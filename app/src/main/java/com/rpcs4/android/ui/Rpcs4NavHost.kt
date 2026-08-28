@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.rpcs4.android.ui.screens.emulator.EmulatorScreen
 import com.rpcs4.android.ui.screens.library.LibraryScreen

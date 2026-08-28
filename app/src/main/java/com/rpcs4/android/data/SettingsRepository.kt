@@ -81,9 +81,9 @@ object SettingsRepository {
 
     // ------------------------------------------------------------- game library
 
-    val gamesTreeUri: Flow<String> = context.dataStore.data.map { it[K_TREE_URI].orEmpty() }
-    val directRoot: Flow<String> = context.dataStore.data.map { it[K_DIRECT_ROOT].orEmpty() }
-    val sourceMode: Flow<SourceMode> = context.dataStore.data.map {
+    fun gamesTreeUri(context: Context): Flow<String> = context.dataStore.data.map { it[K_TREE_URI].orEmpty() }
+    fun directRoot(context: Context): Flow<String> = context.dataStore.data.map { it[K_DIRECT_ROOT].orEmpty() }
+    fun sourceMode(context: Context): Flow<SourceMode> = context.dataStore.data.map {
         when (it[K_SOURCE_MODE]) {
             SourceMode.DIRECT.name -> SourceMode.DIRECT
             else -> SourceMode.IMPORT
@@ -104,7 +104,7 @@ object SettingsRepository {
 
     // ------------------------------------------------------------ core config
 
-    val emuConfig: Flow<EmuConfig> = context.dataStore.data.map { prefs ->
+    fun emuConfig(context: Context): Flow<EmuConfig> = context.dataStore.data.map { prefs ->
         EmuConfig(
             resolutionScale = prefs[K_RES_SCALE] ?: 1.0f,
             copyCommandBuffers = prefs[toggleKeys.getValue("copy_command_buffers")] ?: false,
@@ -130,5 +130,5 @@ object SettingsRepository {
     }
 
     /** Snapshot for the pre-boot push to native. */
-    suspend fun snapshot(context: Context): EmuConfig = emuConfig.first()
+    suspend fun snapshot(context: Context): EmuConfig = emuConfig(context).first()
 }

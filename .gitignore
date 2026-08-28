@@ -12,8 +12,8 @@ build/
 
 # Vendored snapshot of the upstream emulation core (populated by
 # scripts/vendor_core.sh). The git submodule rpcs4/ remains the source of truth.
-app/cpp/core/
-app/cpp/Dependencies/
+app/src/main/cpp/core/
+app/src/main/cpp/Dependencies/
 
 # Gradle wrapper downloads its distribution at first run
 .gradle/

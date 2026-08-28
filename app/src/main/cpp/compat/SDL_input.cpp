@@ -147,7 +147,7 @@ void SDL_GameControllerClose(SDL_GameController* /*controller*/)
 
 SDL_Joystick* SDL_GameControllerGetJoystick(SDL_GameController* controller)
 {
-    return controller;   // Opaque one-to-one handle.
+    return reinterpret_cast<SDL_Joystick*>(controller);   // Opaque one-to-one handle.
 }
 
 Sint32 SDL_JoystickInstanceID(SDL_Joystick* /*joystick*/)

@@ -1,8 +1,8 @@
 package com.rpcs4.android.data
 
 import android.graphics.BitmapFactory
-import android.graphics.ImageBitmap
-import androidx.core.graphics.asImageBitmap
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 
 /**
  * One entry of the game library.

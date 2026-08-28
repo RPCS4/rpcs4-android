@@ -17,8 +17,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-CORE_TARGET="${REPO_ROOT}/app/cpp/core"
-DEPS_TARGET="${REPO_ROOT}/app/cpp/Dependencies"
+CORE_TARGET="${REPO_ROOT}/app/src/main/cpp/core"
+DEPS_TARGET="${REPO_ROOT}/app/src/main/cpp/Dependencies"
 
 SUBMODULE_DIR="${REPO_ROOT}/rpcs4"
 UPSTREAM_RAW="https://codeload.github.com/rpcs4/rpcs4/tar.gz/refs/heads/master"
@@ -60,7 +60,7 @@ download_tarball() {
     find "${DEPS_TARGET}" -maxdepth 1 -type d -empty -exec touch "{}/.SUBMODULE_PLACEHOLDER" \; || true
 }
 
-[[ -d "${REPO_ROOT}/app/cpp" ]] || die "Run this script from inside the rpcs4-android checkout."
+[[ -d "${REPO_ROOT}/app/src/main/cpp" ]] || die "Run this script from inside the rpcs4-android checkout."
 
 case "${1:-}" in
     --download)
